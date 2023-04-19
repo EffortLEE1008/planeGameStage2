@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
-    float alive_timer = 5f;
+    public float bullet_damge = 1;
+    float alive_timer = 4f;
     float cur_timer = 0;
 
     // Update is called once per frame
@@ -20,4 +20,6 @@ public class Bullet : MonoBehaviour
         }
         
     }
+
+
 }

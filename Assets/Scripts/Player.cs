@@ -11,11 +11,20 @@ public class Player : MonoBehaviour
     Vector2 nextVec;
 
     float speed = 5;
+    float bullet_speed = 5;
+    public int player_hp = 3;
+    public int score = 0;
 
     bool hit_rightbox;
     bool hit_leftbox;
     bool hit_topbox;
     bool hit_bottombox;
+
+    float max_firedelay = .15f;
+    float firedelay = 0;
+
+
+    
 
 
     private void Awake()
@@ -30,6 +39,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        firedelay += Time.deltaTime;
+        
+
         inputVec.x = Input.GetAxisRaw("Horizontal");
         if ((hit_rightbox && inputVec.x == 1) || (hit_leftbox && inputVec.x == -1))
             inputVec.x = 0;
@@ -37,6 +49,12 @@ public class Player : MonoBehaviour
         inputVec.y = Input.GetAxisRaw("Vertical");
         if ((hit_topbox && inputVec.y == 1) || (hit_bottombox && inputVec.y == -1))
             inputVec.y = 0;
+
+        Fire();
+        Reload();
+
+
+    
 
     }
 
@@ -48,10 +66,23 @@ public class Player : MonoBehaviour
         my_rigid.MovePosition(my_rigid.position + nextVec);
     }
 
-    //void fire()
-    //{
-        
-    //} 
+    void Fire()
+    {
+        if (firedelay < max_firedelay)
+            return;
+
+        GameObject bullet = Instantiate(bulletobj, transform.position, transform.rotation);
+        Rigidbody2D bul_rigid = bullet.GetComponent<Rigidbody2D>();
+        //bul_rigid.velocity = Vector2.up * bullet_speed;
+        bul_rigid.AddForce(Vector2.up * bullet_speed, ForceMode2D.Impulse);
+
+        firedelay = 0;
+    }
+    void Reload()
+    {
+        firedelay = firedelay + Time.deltaTime;
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
