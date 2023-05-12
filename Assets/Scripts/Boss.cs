@@ -15,14 +15,14 @@ public class Boss : MonoBehaviour
 
     [SerializeField]
     GameObject bossBullet;
+    [SerializeField]
+    GameObject[] boss_barrel;
 
     Rigidbody2D my_rigid;
     PolygonCollider2D capsule;
 
-    int pattenIndex;
-    int curPatten;
-    [SerializeField]
-    int[] maxPatten;
+    public int pattenIndex=0;
+    
 
 
     private void Awake()
@@ -60,83 +60,87 @@ public class Boss : MonoBehaviour
     void Selectpatten()
     {
         //3차 연산자
-        pattenIndex = pattenIndex == 3 ? 0 : pattenIndex + 1;
-        ////////////////////////////
-        //if (pattenIndex == 3)
-        //{
-        //    pattenIndex = 0;
-        //}
-        //else if (pattenIndex != 3)
-        //    pattenIndex = pattenIndex + 1;
-        ////////////////////////////
-        curPatten = 0;
+        //pattenIndex = pattenIndex == 3 ? 0 : pattenIndex + 1;
+        
+        //////////////////////////
+        if (pattenIndex == 2)
+        {
+            pattenIndex = 0;
+        }
+        else if (pattenIndex != 2)
+            pattenIndex = pattenIndex + 1;
+        //////////////////////////
 
         switch (pattenIndex)
         {
             case 0:
-                FireFoward();
+                StartCoroutine(FireFast2());
                 break;
 
             case 1:
-                FireFast();
+                StartCoroutine(FireSin());
                 break;
 
             case 2:
-                FireSin();
-                break;
-
-            case 3:
                 FireArt();
                 break;
+
         }
     }
 
-    void FireFoward()
+
+    IEnumerator FireFast2()
     {
-        Debug.Log("앞으로 4발 발싸");
+        int count = 0;
+        Debug.Log("시작 코루틴");
 
-        curPatten++;
+        while (count<20)
+        {
+            count += 1;
+            Debug.Log("코루틴 while문");
+            GameObject fastbullet1 = Instantiate(bossBullet, transform.position + new Vector3(.3f, -1f, 0), transform.rotation);
+            GameObject fastbullet2 = Instantiate(bossBullet, transform.position + new Vector3(-.3f, -1f, 0), transform.rotation);
 
-        if (curPatten < maxPatten[pattenIndex])
-            Invoke("FireFoward", 1);
-        else
-            Invoke("Selectpatten", 2);
+            Rigidbody2D rigid_fast1 = fastbullet1.GetComponent<Rigidbody2D>();
+            Rigidbody2D rigid_fast2 = fastbullet2.GetComponent<Rigidbody2D>();
 
+            Vector2 dir = player.transform.position - transform.position;
+            Debug.Log("player의 위치는 ? : " + player.transform.position);
+            rigid_fast1.AddForce(dir.normalized * 3, ForceMode2D.Impulse);
+            rigid_fast2.AddForce(dir.normalized * 3, ForceMode2D.Impulse);
+
+            yield return new WaitForSeconds(.5f);
+        }
+        Invoke("Selectpatten", 2);
     }
 
-    void FireFast()
+
+    IEnumerator FireSin()
     {
-        GameObject fastbullet1 = Instantiate(bossBullet, transform.position + new Vector3(.3f, -1f,0), transform.rotation);
-        GameObject fastbullet2 = Instantiate(bossBullet, transform.position + new Vector3(-.3f, -1f, 0), transform.rotation);
-
-
-        Rigidbody2D rigid_fast1 = fastbullet1.GetComponent<Rigidbody2D>();
-        Rigidbody2D rigid_fast2 = fastbullet2.GetComponent<Rigidbody2D>();
-
-        Vector2 dir = player.transform.position - transform.position;
-        Debug.Log("player의 위치는 ? : "+ player.transform.position);
-        rigid_fast1.AddForce(dir.normalized * 3, ForceMode2D.Impulse);
-        rigid_fast2.AddForce(dir.normalized * 3, ForceMode2D.Impulse);
-
-        curPatten++;
-
-        if (curPatten < maxPatten[pattenIndex])
-            Invoke("FireFast", .5f);
-        else
-            Invoke("Selectpatten", 2);
-
-    }
-
-    void FireSin()
-    {
+        int count = 0;
+        
         Debug.Log("Sin파로 발싸");
+        while (count < 30)
+        {
+            count += 1;
+            GameObject fastbullet1 = Instantiate(bossBullet, boss_barrel[0].transform.position + new Vector3(.3f, -1f, 0), transform.rotation);
+            GameObject fastbullet2 = Instantiate(bossBullet, boss_barrel[1].transform.position + new Vector3(.3f, -1f, 0), transform.rotation);
 
-        curPatten++;
+            Rigidbody2D rigid_fast1 = fastbullet1.GetComponent<Rigidbody2D>();
+            Rigidbody2D rigid_fast2 = fastbullet2.GetComponent<Rigidbody2D>();
 
-        if (curPatten < maxPatten[pattenIndex])
-            Invoke("FireSin",1);
-        else
-            Invoke("Selectpatten", 2);
+            Vector2 bullet_dir0 = new Vector2(Mathf.Sin(Mathf.PI* 3*count/30), -1);
+            Vector2 bullet_dir1 = new Vector2(Mathf.Sin(Mathf.PI * 3*count / 30), -1);
+
+            rigid_fast1.AddForce(bullet_dir0.normalized * 5, ForceMode2D.Impulse);
+            rigid_fast2.AddForce(bullet_dir1.normalized * 5, ForceMode2D.Impulse);
+
+            yield return new WaitForSeconds(.2f);
+
+        }
+
+
+        Invoke("Selectpatten", 1);
 
 
     }
@@ -145,12 +149,8 @@ public class Boss : MonoBehaviour
     {
         Debug.Log("아름답게 발싸");
 
-        curPatten++;
 
-        if (curPatten < maxPatten[pattenIndex])
-            Invoke("FireArt", .7f);
-        else
-            Invoke("Selectpatten", 2);
+        Invoke("Selectpatten", .5f);
 
     }
 

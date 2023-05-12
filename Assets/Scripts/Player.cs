@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     bool hit_topbox;
     bool hit_bottombox;
 
-    float max_firedelay = .15f;
+    float max_firedelay = .3f;
     float firedelay = 0;
 
 

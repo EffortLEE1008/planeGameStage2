@@ -12,12 +12,14 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     GameObject player;
+    GameObject playerobj;
 
     [SerializeField]
     GameObject boss;
 
     [SerializeField]
     Transform playerspawnPos;
+
     [SerializeField]
     Transform bossspawnPoss;
     float max_timer = .7f;
@@ -26,22 +28,17 @@ public class GameManager : MonoBehaviour
     float enemy_speed = 2;
 
     public Text scoreText;
+    bool isspawnboss = true;
 
+    Player playercs;
 
     private void Awake()
     {
-        // playerid-> 인스턴스화 하고
-        GameObject playerid = Instantiate(player, playerspawnPos.position, playerspawnPos.rotation);
-        GameObject bossid = Instantiate(boss, bossspawnPoss.position, bossspawnPoss.rotation);
-        
-        //boss.cs파일에 player object에 playerid 인스턴스화 된 값을 넣어주기!!! 핵심 어려움
-        Boss bosscs = bossid.GetComponent<Boss>();
-        bosscs.player = playerid;
-
-        
-        Player playercs = player.GetComponent<Player>();
+        playerobj = Instantiate(player, playerspawnPos.position, playerspawnPos.rotation);
+        playercs = player.GetComponent<Player>();
         playercs.score = 0;
     }
+
 
 
 
@@ -57,11 +54,15 @@ public class GameManager : MonoBehaviour
             SpawnEnemy();
             cur_timer = 0;
         }
+        if((playercs.score >= 0) && isspawnboss){
+            isspawnboss = false;
+            SpawnBoss();
 
+        }
             
        
 
-        Player playercs = player.GetComponent<Player>();
+        
         scoreText.text = string.Format("{0:n0}", playercs.score);
         
     }
@@ -87,5 +88,18 @@ public class GameManager : MonoBehaviour
             enemy_rigid.transform.Rotate(Vector3.back * 180);
             enemy_rigid.velocity = Vector2.down * enemy_speed;
         }
+    }
+
+    void SpawnBoss()
+    {
+        // playerid-> 인스턴스화 하고
+        
+        GameObject bossid = Instantiate(boss, bossspawnPoss.position, bossspawnPoss.rotation);
+        bossid.transform.Rotate(Vector3.back * 180);
+
+        //boss.cs파일에 player object에 playerid 인스턴스화 된 값을 넣어주기!!! 핵심 어려움
+        Boss bosscs = bossid.GetComponent<Boss>();
+        bosscs.player = playerobj;
+
     }
 }
