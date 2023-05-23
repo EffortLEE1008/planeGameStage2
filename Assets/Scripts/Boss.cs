@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    [SerializeField]
-    float hp;
-
+    
+    public float max_hp;
+    public float cur_hp;
+    public bool isdead=false;
     
     public GameObject player;
 
@@ -29,6 +30,7 @@ public class Boss : MonoBehaviour
     {
         my_rigid = GetComponent<Rigidbody2D>();
         capsule = GetComponent<PolygonCollider2D>();
+        cur_hp = max_hp;
     }
 
 
@@ -92,12 +94,12 @@ public class Boss : MonoBehaviour
     IEnumerator FireFast2()
     {
         int count = 0;
-        Debug.Log("시작 코루틴");
+        
 
         while (count<20)
         {
             count += 1;
-            Debug.Log("코루틴 while문");
+            
             GameObject fastbullet1 = Instantiate(bossBullet, transform.position + new Vector3(.3f, -1f, 0), transform.rotation);
             GameObject fastbullet2 = Instantiate(bossBullet, transform.position + new Vector3(-.3f, -1f, 0), transform.rotation);
 
@@ -105,7 +107,7 @@ public class Boss : MonoBehaviour
             Rigidbody2D rigid_fast2 = fastbullet2.GetComponent<Rigidbody2D>();
 
             Vector2 dir = player.transform.position - transform.position;
-            Debug.Log("player의 위치는 ? : " + player.transform.position);
+            //Debug.Log("player의 위치는 ? : " + player.transform.position);
             rigid_fast1.AddForce(dir.normalized * 3, ForceMode2D.Impulse);
             rigid_fast2.AddForce(dir.normalized * 3, ForceMode2D.Impulse);
 
@@ -119,7 +121,7 @@ public class Boss : MonoBehaviour
     {
         int count = 0;
         
-        Debug.Log("Sin파로 발싸");
+        //Debug.Log("Sin파로 발싸");
         while (count < 30)
         {
             count += 1;
@@ -147,7 +149,7 @@ public class Boss : MonoBehaviour
 
     void FireArt()
     {
-        Debug.Log("아름답게 발싸");
+        //Debug.Log("아름답게 발싸");
 
 
         Invoke("Selectpatten", .5f);
@@ -156,11 +158,12 @@ public class Boss : MonoBehaviour
 
     void onHit(float damage)
     {
-        hp = hp - damage;
+        cur_hp = cur_hp - damage;
 
-        if (hp <= 0)
+        if (cur_hp <= 0)
         {
             Destroy(gameObject);
+            isdead = true;
         }
     } 
 

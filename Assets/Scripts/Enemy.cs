@@ -7,9 +7,7 @@ public class Enemy : MonoBehaviour
 
     Rigidbody2D my_rigid;
 
-    
-    [SerializeField]
-    float hp;
+    public float hp;
 
     [SerializeField]
     GameObject player;
@@ -17,6 +15,10 @@ public class Enemy : MonoBehaviour
     float alive_timer = 8f;
     float cur_timer = 0;
 
+    public Player playercs;
+
+    public ObjectManager objManager;
+    
     private void Awake()
     {
         my_rigid = transform.GetComponent<Rigidbody2D>();
@@ -32,7 +34,8 @@ public class Enemy : MonoBehaviour
 
         if (cur_timer >= alive_timer)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            cur_timer = 0;
         }
         
 
@@ -46,17 +49,24 @@ public class Enemy : MonoBehaviour
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             hit(bullet.bullet_damge);
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
+
+            GameObject flarebim = objManager.MakeObj("flare_bim");
+            flarebim.transform.position = collision.transform.position;
+
+            flarebim.SetActive(true);
+
+            //StartCoroutine(SetActiveFalse(flarebim));
+            
 
         }
         else if (collision.transform.tag == "Player")
         {
             Player playercs = collision.gameObject.GetComponent<Player>();
             playercs.player_hp = playercs.player_hp - 1;
-            Destroy(gameObject);
+            gameObject.SetActive(false);
 
         }
-
 
 
     }
@@ -68,10 +78,24 @@ public class Enemy : MonoBehaviour
         if (hp <= 0)
         {
 
-            Player playercs = player.GetComponent<Player>();
             playercs.score = playercs.score + 100;
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+
         }
 
     }
+
+
+
+    IEnumerator SetActiveFalse(GameObject target)
+    {
+        Debug.Log("Ω√¿€");
+        yield return new WaitForSeconds(1.1f);
+        target.SetActive(false);
+
+    }
+
+
+
+
 }
