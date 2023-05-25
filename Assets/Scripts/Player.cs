@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -12,8 +13,10 @@ public class Player : MonoBehaviour
 
     float speed = 5;
     float bullet_speed = 5;
-    public int player_hp = 3;
+    public int player_maxhp = 5;
+    public int player_curhp;
     public int score = 0;
+
 
     bool hit_rightbox;
     bool hit_leftbox;
@@ -23,17 +26,20 @@ public class Player : MonoBehaviour
     float max_firedelay = .3f;
     float firedelay = 0;
 
+    public ObjectManager obj_manager;
+
 
     
-
+    
 
     private void Awake()
     {
-        my_rigid = transform.GetComponent<Rigidbody2D>();
+        
     }
     void Start()
     {
-        
+        my_rigid = transform.GetComponent<Rigidbody2D>();
+
     }
 
     // Update is called once per frame
@@ -71,7 +77,8 @@ public class Player : MonoBehaviour
         if (firedelay < max_firedelay)
             return;
 
-        GameObject bullet = Instantiate(bulletobj, transform.position, transform.rotation);
+        GameObject bullet = obj_manager.SelectObj("Player_bullet");
+        bullet.transform.position = gameObject.transform.position;
         Rigidbody2D bul_rigid = bullet.GetComponent<Rigidbody2D>();
         //bul_rigid.velocity = Vector2.up * bullet_speed;
         bul_rigid.AddForce(Vector2.up * bullet_speed, ForceMode2D.Impulse);
@@ -109,6 +116,14 @@ public class Player : MonoBehaviour
 
 
             }
+
+        }
+        else if(collision.gameObject.tag == "Item")
+        {
+
+            collision.gameObject.SetActive(false);
+
+            Debug.Log("·Î±×!");
         }
     }
 

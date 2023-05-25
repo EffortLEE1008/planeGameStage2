@@ -54,7 +54,7 @@ public class Boss : MonoBehaviour
         {
             Bullet playerbulletcs = playerbullet.gameObject.GetComponent<Bullet>();
             onHit(playerbulletcs.bullet_damge);
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
             
         }
 
@@ -162,8 +162,9 @@ public class Boss : MonoBehaviour
 
         if (cur_hp <= 0)
         {
-            Destroy(gameObject);
+            
             isdead = true;
+            gameObject.SetActive(false);
         }
     } 
 

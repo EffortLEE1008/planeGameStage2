@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9891930}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.313, y: 0, z: 0}
+  m_LocalPosition: {x: -6, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -478,8 +478,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 176183987}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.32, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -897,6 +897,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -995,14 +996,29 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32626cf1d1508a43b55704dea21e015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  radius: {x: 0, y: 0}
+  size: {x: 11, y: 15}
 --- !u!1 &531507087
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,7 +1257,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &925381191
 MonoBehaviour:
@@ -1256,6 +1272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyobj: {fileID: 6533001498678038994, guid: 12ccc317e4e379f43b7f26daea16636e, type: 3}
+  bossobj: {fileID: 3625138299000631055, guid: 53638f76e0cfd4e4f8a6038e2eddf49f, type: 3}
   spawnpos:
   - {fileID: 531507088}
   - {fileID: 787830820}
@@ -1264,11 +1281,11 @@ MonoBehaviour:
   - {fileID: 1500319987}
   - {fileID: 1875580142}
   player: {fileID: 208649830462011774, guid: c8b588883e456824480a472f98557fb9, type: 3}
-  boss: {fileID: 3625138299000631055, guid: 53638f76e0cfd4e4f8a6038e2eddf49f, type: 3}
   playerspawnPos: {fileID: 2003123076}
   bossspawnPoss: {fileID: 302900593}
   scoreText: {fileID: 1256165468}
   bossHpSliderobj: {fileID: 2059639118}
+  cam: {fileID: 519420028}
   obj_manager: {fileID: 2062301491}
 --- !u!1 &1048649854
 GameObject:
@@ -1365,7 +1382,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1049745716}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.5, z: 0}
+  m_LocalPosition: {x: 0, y: -8, z: 0}
   m_LocalScale: {x: 7, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2204,7 +2221,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900674971}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.5, z: 0}
+  m_LocalPosition: {x: 0, y: 8, z: 0}
   m_LocalScale: {x: 7, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2464,6 +2481,8 @@ MonoBehaviour:
   boss_bullet: {fileID: 1635946946950061964, guid: ccb94bfdc4c47db41a4c8da1858af617, type: 3}
   player_bullet: {fileID: 1316730121572310050, guid: 26a2b1819b565c241a720cba59608080, type: 3}
   flarebim: {fileID: 100002, guid: cafecd3fc3b761c45bb1553f35cf5c96, type: 3}
+  boss: {fileID: 3625138299000631055, guid: 53638f76e0cfd4e4f8a6038e2eddf49f, type: 3}
+  item: {fileID: 5493314907836928739, guid: fdb11f129a8b74945a7799bff71a028b, type: 3}
 --- !u!4 &2062301492
 Transform:
   m_ObjectHideFlags: 0

@@ -9,14 +9,13 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject enemyobj;
     [SerializeField]
+    GameObject bossobj;
+    [SerializeField]
     Transform[] spawnpos;
 
     [SerializeField]
     GameObject player;
     GameObject playerobj;
-
-    [SerializeField]
-    GameObject boss;
 
     [SerializeField]
     Transform playerspawnPos;
@@ -25,18 +24,29 @@ public class GameManager : MonoBehaviour
     Transform bossspawnPoss;
 
     public Text scoreText;
+
     public GameObject bossHpSliderobj;
+    public GameObject cam;
+
+    GameObject bossid;
     Slider bossHpSlider;
+    
 
     bool isspawnboss = true;
-    bool isslider = false;
+    bool isactivboss = false;
+
+
     float max_timer = .7f;
     float cur_timer;
 
     float enemy_speed = 2;
+    float bosshp = 10;
+
+    bool isslider = false;
 
     Player playercs;
     Boss bosscs;
+    MoveCamera camcs;
 
     public ObjectManager obj_manager;
 
@@ -44,10 +54,20 @@ public class GameManager : MonoBehaviour
     {
         playerobj = Instantiate(player, playerspawnPos.position, playerspawnPos.rotation);
         playercs = playerobj.GetComponent<Player>();
+
         playercs.score = 0;
+        playercs.obj_manager = obj_manager;
+
+        camcs = cam.GetComponent<MoveCamera>();
+        camcs.target = playerobj;
 
         bossHpSliderobj.SetActive(false);
 
+
+    }
+    private void Start()
+    {
+        
     }
 
 
@@ -77,8 +97,7 @@ public class GameManager : MonoBehaviour
 
     private void LateUpdate()
     {
-
-
+        
 
         if (isslider)
         {
@@ -87,10 +106,15 @@ public class GameManager : MonoBehaviour
 
 
         }
-        if(bosscs.isdead)
+
+        if (isactivboss)
         {
-            bossHpSliderobj.SetActive(false);
+            if (!bossid.activeSelf)
+            {
+                bossHpSliderobj.SetActive(false);
+            }
         }
+
 
 
     }
@@ -98,7 +122,7 @@ public class GameManager : MonoBehaviour
     void SpawnEnemy()
     {
         int randspawn = Random.Range(0, 6);
-        GameObject enemy = obj_manager.MakeObj("Enemy");
+        GameObject enemy = obj_manager.SelectObj("Enemy");
 
         Enemy enemycs = enemy.GetComponent<Enemy>();
         enemycs.playercs = playercs;
@@ -132,8 +156,9 @@ public class GameManager : MonoBehaviour
     void SpawnBoss()
     {
         // playerid-> 인스턴스화 하고
-        
-        GameObject bossid = Instantiate(boss, bossspawnPoss.position, bossspawnPoss.rotation);
+
+        bossid = Instantiate(bossobj);
+        bossid.transform.position = bossspawnPoss.transform.position;
         bossid.transform.Rotate(Vector3.back * 180);
 
         //boss.cs파일에 player object에 playerid 인스턴스화 된 값을 넣어주기!!! 핵심 어려움
@@ -142,7 +167,10 @@ public class GameManager : MonoBehaviour
 
         bossHpSliderobj.SetActive(true);
         isslider = true;
+        isactivboss = true;
         bossHpSlider = bossHpSliderobj.GetComponent<Slider>();
+        bosshp = bosscs.cur_hp;
+        
 
 
     }

@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
 
         if (cur_timer > alive_timer)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             cur_timer = 0;
         }
         

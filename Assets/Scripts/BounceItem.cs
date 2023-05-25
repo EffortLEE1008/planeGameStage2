@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BounceItem : MonoBehaviour
 {
-    [SerializeField] [Range(50f, 200f)] float speed = 100f;
-
+    [SerializeField] float speed =10f;
+    Vector2 nextdir;
     Rigidbody2D my_rigid;
     float randomX, randomY;
 
@@ -14,16 +14,16 @@ public class BounceItem : MonoBehaviour
     {
         my_rigid = GetComponent<Rigidbody2D>();
 
-        randomX = Random.Range(-1f, 1f);
-        randomY = Random.Range(-1f, 1f);
-
-        Vector2 nextdir = new Vector2(randomX, randomY).normalized;
-
-        my_rigid.AddForce(nextdir * speed);
-
-
     }
 
     // Update is called once per frame
+
+    private void Update()
+    {
+        
+
+
+
+    }
 
 }

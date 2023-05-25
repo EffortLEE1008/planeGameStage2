@@ -8,9 +8,12 @@ public class ObjectManager : MonoBehaviour
     public GameObject boss_bullet;
     public GameObject player_bullet;
     public GameObject flarebim;
+    public GameObject boss;
+    public GameObject item;
 
 
     GameObject[] enemy_arr;
+    GameObject[] item_arr;
     
     GameObject[] player_bullet_arr;
     GameObject[] boss_bullet_arr;
@@ -19,13 +22,15 @@ public class ObjectManager : MonoBehaviour
 
     GameObject[] obj_arr;
 
-    private void Awake()
+    private void Start()
     {
         enemy_arr = new GameObject[30];
-        player_bullet_arr = new GameObject[30];
+        player_bullet_arr = new GameObject[50];
 
-        boss_bullet_arr = new GameObject[30];
+        boss_bullet_arr = new GameObject[100];
         flarebim_arr = new GameObject[50];
+        item_arr = new GameObject[10];
+        
 
         InitObj();
     }
@@ -62,9 +67,17 @@ public class ObjectManager : MonoBehaviour
             flarebim_arr[i].SetActive(false);
 
         }
+        for (int i = 0; i < item_arr.Length; i++)
+        {
+
+            item_arr[i] = Instantiate(item);
+            item_arr[i].SetActive(false);
+
+        }
+
 
     }
-    public GameObject MakeObj(string type)
+    public GameObject SelectObj(string type)
     {
         
         switch (type)
@@ -82,9 +95,15 @@ public class ObjectManager : MonoBehaviour
                 obj_arr = boss_bullet_arr;
                 break;
 
+            case "Item":
+                obj_arr = item_arr;
+                break;
+
             case "flare_bim":
                 obj_arr = flarebim_arr;
                 break;
+
+
         }
 
         for (int i = 0; i < obj_arr.Length; i++)

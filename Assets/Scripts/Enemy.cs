@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
             hit(bullet.bullet_damge);
             collision.gameObject.SetActive(false);
 
-            GameObject flarebim = objManager.MakeObj("flare_bim");
+            GameObject flarebim = objManager.SelectObj("flare_bim");
             flarebim.transform.position = collision.transform.position;
 
             flarebim.SetActive(true);
@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour
         else if (collision.transform.tag == "Player")
         {
             Player playercs = collision.gameObject.GetComponent<Player>();
-            playercs.player_hp = playercs.player_hp - 1;
+            playercs.player_curhp = playercs.player_curhp - 1;
             gameObject.SetActive(false);
 
         }
@@ -77,6 +77,20 @@ public class Enemy : MonoBehaviour
 
         if (hp <= 0)
         {
+            int rand = Random.Range(0, 10);
+            if (rand > 5)
+            {
+                GameObject itemobj = objManager.SelectObj("Item");
+                itemobj.transform.position = gameObject.transform.position;
+                Rigidbody2D item_rigid = itemobj.GetComponent<Rigidbody2D>();
+                float randomX = Random.Range(-1f, 1f);
+                float randomY = Random.Range(-1f, 1f);
+
+                Vector2 nextdir = new Vector2(randomX, randomY).normalized;
+
+                item_rigid.AddForce(nextdir * 100);
+
+            }
 
             playercs.score = playercs.score + 100;
             gameObject.SetActive(false);
