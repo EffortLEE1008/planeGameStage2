@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    
+    const int bulletnum1 = 30;
+    const int bulletnum2 = 60;
+    const int bulletnum3 = 90;
+
     public float max_hp;
     public float cur_hp;
     public bool isdead=false;
     
     public GameObject player;
+
 
     [SerializeField]
     GameObject playerbullet;
@@ -19,10 +23,14 @@ public class Boss : MonoBehaviour
     [SerializeField]
     GameObject[] boss_barrel;
 
+    List<GameObject> bullet_arr = new List<GameObject>();
+    List<Rigidbody2D> rigid_arr = new List<Rigidbody2D>();
+    Rigidbody2D bullet_rigid;
     Rigidbody2D my_rigid;
     PolygonCollider2D capsule;
 
     public int pattenIndex=0;
+    public ObjectManager obj_manager;
     
 
 
@@ -73,6 +81,8 @@ public class Boss : MonoBehaviour
             pattenIndex = pattenIndex + 1;
         //////////////////////////
 
+        pattenIndex = 3;
+
         switch (pattenIndex)
         {
             case 0:
@@ -84,7 +94,11 @@ public class Boss : MonoBehaviour
                 break;
 
             case 2:
-                FireArt();
+                StartCoroutine(FireArt());
+                break;
+
+            case 3:
+                StartCoroutine(FireCross());
                 break;
 
         }
@@ -99,9 +113,12 @@ public class Boss : MonoBehaviour
         while (count<20)
         {
             count += 1;
-            
-            GameObject fastbullet1 = Instantiate(bossBullet, transform.position + new Vector3(.3f, -1f, 0), transform.rotation);
-            GameObject fastbullet2 = Instantiate(bossBullet, transform.position + new Vector3(-.3f, -1f, 0), transform.rotation);
+
+            GameObject fastbullet1 = obj_manager.SelectObj("Boss_bullet");
+            fastbullet1.transform.position = transform.position + new Vector3(-.3f, -1f, 0);
+
+            GameObject fastbullet2 = obj_manager.SelectObj("Boss_bullet");
+            fastbullet2.transform.position = transform.position + new Vector3(.3f, -1f, 0); 
 
             Rigidbody2D rigid_fast1 = fastbullet1.GetComponent<Rigidbody2D>();
             Rigidbody2D rigid_fast2 = fastbullet2.GetComponent<Rigidbody2D>();
@@ -116,7 +133,6 @@ public class Boss : MonoBehaviour
         Invoke("Selectpatten", 2);
     }
 
-
     IEnumerator FireSin()
     {
         int count = 0;
@@ -125,9 +141,12 @@ public class Boss : MonoBehaviour
         while (count < 30)
         {
             count += 1;
-            GameObject fastbullet1 = Instantiate(bossBullet, boss_barrel[0].transform.position + new Vector3(.3f, -1f, 0), transform.rotation);
-            GameObject fastbullet2 = Instantiate(bossBullet, boss_barrel[1].transform.position + new Vector3(.3f, -1f, 0), transform.rotation);
-
+            GameObject fastbullet1 = obj_manager.SelectObj("Boss_bullet");
+            fastbullet1.transform.position = boss_barrel[0].transform.position + new Vector3(.3f, -1f, 0);
+            
+            GameObject fastbullet2 = obj_manager.SelectObj("Boss_bullet");
+            fastbullet2.transform.position = boss_barrel[1].transform.position + new Vector3(.3f, -1f, 0);
+            
             Rigidbody2D rigid_fast1 = fastbullet1.GetComponent<Rigidbody2D>();
             Rigidbody2D rigid_fast2 = fastbullet2.GetComponent<Rigidbody2D>();
 
@@ -147,12 +166,247 @@ public class Boss : MonoBehaviour
 
     }
 
-    void FireArt()
+    IEnumerator FireArt()
     {
-        //Debug.Log("아름답게 발싸");
+
+        for (int i = 0; i < bulletnum1; i++)
+        {
+                
+            bullet_arr.Add(obj_manager.SelectObj("Boss_bullet"));
+
+            bullet_arr[i].transform.position = boss_barrel[0].transform.position ;
+            bullet_arr[i].transform.rotation = Quaternion.identity;
+            Debug.Log("here");
+            bullet_rigid = bullet_arr[i].GetComponent<Rigidbody2D>();
+            rigid_arr.Add(bullet_rigid);
+            Debug.Log(rigid_arr[i]);
+
+            rigid_arr[i].AddForce(Vector2.down * 5, ForceMode2D.Impulse);
+            Debug.Log("실행 2");
+        }
+        yield return new WaitForSeconds(.4f);
+
+        for (int i = bulletnum1; i < bulletnum2; i++)
+        {
+
+            bullet_arr.Add(obj_manager.SelectObj("Boss_bullet"));
+
+            bullet_arr[i].transform.position = boss_barrel[0].transform.position;
+            bullet_arr[i].transform.rotation = Quaternion.identity;
+            
+            bullet_rigid = bullet_arr[i].GetComponent<Rigidbody2D>();
+            rigid_arr.Add(bullet_rigid);
+            Debug.Log(rigid_arr[i]);
+
+            rigid_arr[i].AddForce(Vector2.down * 5, ForceMode2D.Impulse);
+            
+        }
+        yield return new WaitForSeconds(.4f);
+
+        for (int i = bulletnum2; i < bulletnum3; i++)
+        {
+
+            bullet_arr.Add(obj_manager.SelectObj("Boss_bullet"));
+
+            bullet_arr[i].transform.position = boss_barrel[0].transform.position;
+            bullet_arr[i].transform.rotation = Quaternion.identity;
+            Debug.Log("here");
+            bullet_rigid = bullet_arr[i].GetComponent<Rigidbody2D>();
+            rigid_arr.Add(bullet_rigid);
+            Debug.Log(rigid_arr[i]);
+
+            rigid_arr[i].AddForce(Vector2.down * 5, ForceMode2D.Impulse);
+            Debug.Log("실행 2");
+        }
+        yield return new WaitForSeconds(.4f);
+
+        for(int i=0; i < bulletnum1; i++)
+        {
+            
+            Vector2 bullet_dir = new Vector2(Mathf.Cos(Mathf.PI * 2 * i / bulletnum1), Mathf.Sin(Mathf.PI * 2 * i / bulletnum1));
+            rigid_arr[i].velocity = Vector2.zero;
+            rigid_arr[i].AddForce(bullet_dir.normalized * 5, ForceMode2D.Impulse);
+
+        }
+        yield return new WaitForSeconds(.4f);
+        int j = 0;
+        for (int i = bulletnum1; i < bulletnum2; i++)
+        {
+            
+            Vector2 bullet_dir = new Vector2(Mathf.Cos(Mathf.PI * 2 * j / bulletnum1), Mathf.Sin(Mathf.PI * 2 * j / bulletnum1));
+            rigid_arr[i].velocity = Vector2.zero;
+            rigid_arr[i].AddForce(bullet_dir.normalized * 5, ForceMode2D.Impulse);
+            j++;
+        }
+
+        yield return new WaitForSeconds(.4f);
+
+        j = 0;
+        for (int i = bulletnum2; i < bulletnum3; i++)
+        {
+            Vector2 bullet_dir = new Vector2(Mathf.Cos(Mathf.PI * 2 * j / bulletnum1), Mathf.Sin(Mathf.PI * 2 * j / bulletnum1)); // 부채꼴 모양으로 날리기.
+            
+            rigid_arr[i].velocity = Vector2.zero;   //속도 초기화
+            rigid_arr[i].AddForce(bullet_dir.normalized * 5, ForceMode2D.Impulse);
+            j++;
+        }
+
+        rigid_arr.Clear();
+        bullet_arr.Clear();
+
+        Invoke("Selectpatten",4f);
+
+    }
+
+    IEnumerator FireCross()
+    {
+
+        for (int i = 0; i < 4; i++)
+        {
+
+            bullet_arr.Add(obj_manager.SelectObj("Boss_bullet"));
+
+            bullet_arr[i].transform.position = boss_barrel[0].transform.position;
+            bullet_arr[i].transform.rotation = Quaternion.identity;
+            Debug.Log("here");
+            bullet_rigid = bullet_arr[i].GetComponent<Rigidbody2D>();
+            rigid_arr.Add(bullet_rigid);
+           // Debug.Log(rigid_arr[i]);
+
+            rigid_arr[i].AddForce(Vector2.down * 5, ForceMode2D.Impulse);
+            //Debug.Log("실행 2");
+        }
+        yield return new WaitForSeconds(.4f);
+
+        for (int i = 4; i < 8; i++)
+        {
+
+            bullet_arr.Add(obj_manager.SelectObj("Boss_bullet"));
+
+            bullet_arr[i].transform.position = boss_barrel[0].transform.position;
+            bullet_arr[i].transform.rotation = Quaternion.identity;
+
+            bullet_rigid = bullet_arr[i].GetComponent<Rigidbody2D>();
+            rigid_arr.Add(bullet_rigid);
+            Debug.Log(rigid_arr[i]);
+
+            rigid_arr[i].AddForce(Vector2.down * 5, ForceMode2D.Impulse);
+
+        }
+        yield return new WaitForSeconds(.4f);
+
+        for (int i = 8; i < 12; i++)
+        {
+
+            bullet_arr.Add(obj_manager.SelectObj("Boss_bullet"));
+
+            bullet_arr[i].transform.position = boss_barrel[0].transform.position;
+            bullet_arr[i].transform.rotation = Quaternion.identity;
+            //Debug.Log("here");
+            bullet_rigid = bullet_arr[i].GetComponent<Rigidbody2D>();
+            rigid_arr.Add(bullet_rigid);
+            Debug.Log(rigid_arr[i]);
+
+            rigid_arr[i].AddForce(Vector2.down * 5, ForceMode2D.Impulse);
+            //Debug.Log("실행 2");
+        }
+        yield return new WaitForSeconds(.4f);
 
 
-        Invoke("Selectpatten", .5f);
+        int index = 0;
+        Vector3 bullet_dir = new Vector2(0, 0);
+        for (int i = 0; i < 4; i++)
+        {
+            switch (index)
+            {
+                case 0:
+                    bullet_dir = new Vector2(0, 1);
+                    break;
+
+                case 1:
+                    bullet_dir = new Vector2(0, -1);
+                    break;
+
+                case 2:
+                    bullet_dir = new Vector2(1, 0);
+                    break;
+
+                case 3:
+                    bullet_dir = new Vector2(-1, 0);
+                    break;
+            }
+
+
+            rigid_arr[i].velocity = Vector2.zero;
+            rigid_arr[i].AddForce(bullet_dir.normalized * 5, ForceMode2D.Impulse);
+            index++;
+
+        }
+        yield return new WaitForSeconds(.4f);
+
+        index = 0;
+        for (int i = 4; i < 8; i++)
+        {
+            switch (index)
+            {
+                case 0:
+                    bullet_dir = new Vector2(0, 1);
+                    break;
+
+                case 1:
+                    bullet_dir = new Vector2(0, -1);
+                    break;
+
+                case 2:
+                    bullet_dir = new Vector2(1, 0);
+                    break;
+
+                case 3:
+                    bullet_dir = new Vector2(-1, 0);
+                    break;
+            }
+
+
+            rigid_arr[i].velocity = Vector2.zero;
+            rigid_arr[i].AddForce(bullet_dir.normalized * 5, ForceMode2D.Impulse);
+            index++;
+        }
+        yield return new WaitForSeconds(.4f);
+
+        index = 0;
+        for (int i = 8; i < 12; i++)
+        {
+            switch (index)
+            {
+                case 0:
+                    bullet_dir = new Vector2(0, 1);
+                    break;
+
+                case 1:
+                    bullet_dir = new Vector2(0, -1);
+                    break;
+
+                case 2:
+                    bullet_dir = new Vector2(1, 0);
+                    break;
+
+                case 3:
+                    bullet_dir = new Vector2(-1, 0);
+                    break;
+            }
+
+
+            rigid_arr[i].velocity = Vector2.zero;
+            rigid_arr[i].AddForce(bullet_dir.normalized * 5, ForceMode2D.Impulse);
+            index++;
+
+        }
+        yield return new WaitForSeconds(.4f);
+
+        rigid_arr.Clear();
+        bullet_arr.Clear();
+
+        Invoke("Selectpatten", 4f);
 
     }
 

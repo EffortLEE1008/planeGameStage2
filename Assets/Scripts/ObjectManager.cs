@@ -27,7 +27,7 @@ public class ObjectManager : MonoBehaviour
         enemy_arr = new GameObject[30];
         player_bullet_arr = new GameObject[50];
 
-        boss_bullet_arr = new GameObject[100];
+        boss_bullet_arr = new GameObject[150];
         flarebim_arr = new GameObject[50];
         item_arr = new GameObject[10];
         

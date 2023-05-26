@@ -28,10 +28,6 @@ public class Player : MonoBehaviour
 
     public ObjectManager obj_manager;
 
-
-    
-    
-
     private void Awake()
     {
         
@@ -68,8 +64,13 @@ public class Player : MonoBehaviour
     {
 
         nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
+        transform.position = my_rigid.position + nextVec;
+        float clampx = Mathf.Clamp(transform.position.x, -5, 5);
+        float clampy = Mathf.Clamp(transform.position.y, -5, 5);
 
-        my_rigid.MovePosition(my_rigid.position + nextVec);
+        transform.position = new Vector2(clampx, clampy);
+
+        //my_rigid.MovePosition(my_rigid.position + nextVec);
     }
 
     void Fire()
@@ -83,6 +84,7 @@ public class Player : MonoBehaviour
         //bul_rigid.velocity = Vector2.up * bullet_speed;
         bul_rigid.AddForce(Vector2.up * bullet_speed, ForceMode2D.Impulse);
 
+        
         firedelay = 0;
     }
     void Reload()

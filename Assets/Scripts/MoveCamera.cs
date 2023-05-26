@@ -6,7 +6,7 @@ public class MoveCamera : MonoBehaviour
 {
     public GameObject target;
 
-    public Vector2 radius;
+    public Vector2 zero_point;
     public Vector2 size;
 
     float height;
@@ -26,7 +26,7 @@ public class MoveCamera : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(radius, size);
+        Gizmos.DrawWireCube(zero_point, size);
     }
 
     // Update is called once per frame
@@ -42,10 +42,10 @@ public class MoveCamera : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, -10);
 
         float lx = size.x * 0.5f - width;
-        float clampX = Mathf.Clamp(transform.position.x, -lx + radius.x, lx + radius.x);
+        float clampX = Mathf.Clamp(transform.position.x, -lx + zero_point.x, lx + zero_point.x);
 
         float ly = size.y * 0.5f - height;
-        float clampY = Mathf.Clamp(transform.position.y, -ly + radius.y, ly + radius.y);
+        float clampY = Mathf.Clamp(transform.position.y, -ly + zero_point.y, ly + zero_point.y);
 
         transform.position = new Vector3(clampX, clampY, -10f);
 

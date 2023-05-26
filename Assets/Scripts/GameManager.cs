@@ -164,6 +164,7 @@ public class GameManager : MonoBehaviour
         //boss.cs파일에 player object에 playerid 인스턴스화 된 값을 넣어주기!!! 핵심 어려움
         bosscs = bossid.GetComponent<Boss>();
         bosscs.player = playerobj;
+        bosscs.obj_manager = obj_manager;
 
         bossHpSliderobj.SetActive(true);
         isslider = true;
