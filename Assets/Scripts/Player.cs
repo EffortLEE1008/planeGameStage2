@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
 
             collision.gameObject.SetActive(false);
 
-            Debug.Log("·Î±×!");
+            
         }
     }
 

@@ -73,15 +73,14 @@ public class Boss : MonoBehaviour
         //pattenIndex = pattenIndex == 3 ? 0 : pattenIndex + 1;
         
         //////////////////////////
-        if (pattenIndex == 2)
+        if (pattenIndex >= 3)
         {
             pattenIndex = 0;
         }
-        else if (pattenIndex != 2)
+        else if (pattenIndex != 3)
             pattenIndex = pattenIndex + 1;
         //////////////////////////
 
-        pattenIndex = 3;
 
         switch (pattenIndex)
         {
@@ -406,7 +405,7 @@ public class Boss : MonoBehaviour
         rigid_arr.Clear();
         bullet_arr.Clear();
 
-        Invoke("Selectpatten", 4f);
+        Invoke("Selectpatten", 3f);
 
     }
 
