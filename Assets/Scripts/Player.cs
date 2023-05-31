@@ -13,8 +13,8 @@ public class Player : MonoBehaviour
 
     float speed = 5;
     float bullet_speed = 5;
-    public int player_maxhp = 5;
-    public int player_curhp;
+    public float player_maxhp = 30;
+    public float player_curhp;
     public int score = 0;
 
 
@@ -34,15 +34,19 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
+
         my_rigid = transform.GetComponent<Rigidbody2D>();
+        player_curhp = player_maxhp;
 
     }
 
     // Update is called once per frame
     void Update()
     {
+
         firedelay += Time.deltaTime;
-        
+
+        my_rigid.velocity = Vector2.zero;
 
         inputVec.x = Input.GetAxisRaw("Horizontal");
         if ((hit_rightbox && inputVec.x == 1) || (hit_leftbox && inputVec.x == -1))
@@ -55,8 +59,6 @@ public class Player : MonoBehaviour
         Fire();
         Reload();
 
-
-    
 
     }
 
@@ -120,19 +122,21 @@ public class Player : MonoBehaviour
             }
 
         }
-        else if(collision.gameObject.tag == "Item")
+        else if (collision.gameObject.tag == "BossBullet")
         {
+            Hit(1);
 
-            collision.gameObject.SetActive(false);
-
-            
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+
+
         if (collision.gameObject.tag == "Boundary")
         {
+
             switch (collision.gameObject.name)
             {
                 case "Right_box":
@@ -153,7 +157,39 @@ public class Player : MonoBehaviour
 
 
             }
+
         }
+
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Item")
+        {
+            BounceItem itemcs = collision.gameObject.GetComponent<BounceItem>();
+            //itemcs.cur_timer = 0;
+            collision.gameObject.SetActive(false);
+
+        }
+
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Hit(1);
+        }
+
+    }
+
+    void Hit(float dmg)
+    {
+        player_curhp = player_curhp - dmg;
+
+        if (player_curhp <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+
+
 
     }
 

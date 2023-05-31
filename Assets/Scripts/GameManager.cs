@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -24,12 +25,16 @@ public class GameManager : MonoBehaviour
     Transform bossspawnPoss;
 
     public Text scoreText;
+    public GameObject gameOver;
 
     public GameObject bossHpSliderobj;
+    public GameObject PlayerHpBarObj;
+
     public GameObject cam;
 
     GameObject bossid;
     Slider bossHpSlider;
+    Slider playerHpSlider;
     
 
     bool isspawnboss = true;
@@ -47,13 +52,15 @@ public class GameManager : MonoBehaviour
     Player playercs;
     Boss bosscs;
     MoveCamera camcs;
-
+    float hp = 100;
+    float curhp = 100;
     public ObjectManager obj_manager;
 
     private void Awake()
     {
         playerobj = Instantiate(player, playerspawnPos.position, playerspawnPos.rotation);
         playercs = playerobj.GetComponent<Player>();
+        playerHpSlider = PlayerHpBarObj.GetComponent<Slider>();
 
         playercs.score = 0;
         playercs.obj_manager = obj_manager;
@@ -115,6 +122,15 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (!playerobj.activeSelf)
+        {
+            gameOver.SetActive(true);
+
+        }
+        
+
+        playerHpSlider.value = playercs.player_curhp / playercs.player_maxhp;
+    
 
 
     }
@@ -176,6 +192,10 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void ReStart()
+    {
+        SceneManager.LoadScene(0);
+    }
 
 
 

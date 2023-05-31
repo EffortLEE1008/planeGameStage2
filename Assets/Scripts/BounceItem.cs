@@ -9,6 +9,9 @@ public class BounceItem : MonoBehaviour
     Rigidbody2D my_rigid;
     float randomX, randomY;
 
+    public float cur_timer;
+    float max_timer = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +23,18 @@ public class BounceItem : MonoBehaviour
 
     private void Update()
     {
+        cur_timer = cur_timer + Time.deltaTime;
+
+        if (cur_timer > max_timer)
+        {
+            gameObject.SetActive(false);
+
+            cur_timer = 0;
+                
+
+
+
+        }
         
 
 

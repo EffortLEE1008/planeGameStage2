@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour
         {
             Player playercs = collision.gameObject.GetComponent<Player>();
             playercs.player_curhp = playercs.player_curhp - 1;
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
 
         }
 
@@ -91,7 +91,7 @@ public class Enemy : MonoBehaviour
                 item_rigid.AddForce(nextdir * 100);
 
             }
-
+            cur_timer = 0;
             playercs.score = playercs.score + 100;
             gameObject.SetActive(false);
 

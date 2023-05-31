@@ -17,11 +17,7 @@ public class MoveCamera : MonoBehaviour
         height = Camera.main.orthographicSize;
         width = height * Screen.width / Screen.height;
 
-        Debug.Log(height);
-        Debug.Log(Screen.width);
-        Debug.Log(Screen.height);
-        Debug.Log(width);
-        
+
     }
     private void OnDrawGizmos()
     {
