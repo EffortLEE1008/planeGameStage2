@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletobj: {fileID: 1316730121572310050, guid: 26a2b1819b565c241a720cba59608080, type: 3}
-  player_maxhp: 40
+  player_maxhp: 20
   player_curhp: 0
   score: 200
   obj_manager: {fileID: 0}

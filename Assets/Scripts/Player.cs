@@ -125,6 +125,7 @@ public class Player : MonoBehaviour
         else if (collision.gameObject.tag == "BossBullet")
         {
             Hit(1);
+            collision.gameObject.SetActive(false);
 
         }
 

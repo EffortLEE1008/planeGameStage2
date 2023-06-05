@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     public Text scoreText;
     public GameObject gameOver;
+    public GameObject gameWin;
 
     public GameObject bossHpSliderobj;
     public GameObject PlayerHpBarObj;
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        
+        Time.timeScale = 1;
     }
 
 
@@ -119,6 +120,8 @@ public class GameManager : MonoBehaviour
             if (!bossid.activeSelf)
             {
                 bossHpSliderobj.SetActive(false);
+                gameWin.SetActive(true);
+                Invoke("StopGame", 1);
             }
         }
 
@@ -194,10 +197,19 @@ public class GameManager : MonoBehaviour
 
     public void ReStart()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Stage1");
+        
+    }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+        
     }
 
-
+    void StopGame()
+    {
+        Time.timeScale = 0;
+    }
 
 
 
